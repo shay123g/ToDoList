@@ -13,11 +13,11 @@ public class UserWebRequest {
     @JsonProperty
     private String email;
     @JsonProperty
-    private boolean isAdmin;
+    private Boolean isAdmin = false;
     @JsonProperty
-    private boolean isActive;
+    private Boolean isActive = false;
     @JsonProperty
-    private String Password;
+    private String password;
 
 
 }

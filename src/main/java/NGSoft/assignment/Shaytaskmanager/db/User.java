@@ -1,12 +1,17 @@
 package NGSoft.assignment.Shaytaskmanager.db;
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 import org.springframework.stereotype.Component;
 
-@Data
 @Entity
+@Data
 @Builder
+@AllArgsConstructor
+@NoArgsConstructor
+@Table(name = "owners")
 public class User {
 
     @Id
@@ -14,10 +19,10 @@ public class User {
     private int ID;
     private String name;
     private String email;
-    private boolean isAdmin;
-    private boolean isActive;
+    private Boolean isAdmin;
+    private Boolean isActive;
 
     //FIXME: change implementation after testing
-    private String Password;
+    private String password;
 
 }

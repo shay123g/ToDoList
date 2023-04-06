@@ -30,7 +30,12 @@ public class UserService {
         && Objects.equals(existingUser.getPassword(), user.getPassword())) {
             throw new Exception(ExceptionMessages.USER_NO_CHANGES);
         }
-        return userRepository.save(Utils.buildUserDBObject(user));
+        existingUser.setIsActive(user.getIsActive() != null ? user.getIsActive() : existingUser.getIsActive());
+        existingUser.setName(user.getName() != null ? user.getName(): existingUser.getName());
+        existingUser.setIsAdmin(user.getIsAdmin() != null ? user.getIsAdmin() : existingUser.getIsAdmin());
+        existingUser.setEmail(user.getEmail() != null ? user.getEmail() : existingUser.getEmail());
+        existingUser.setPassword(user.getPassword() != null ? user.getPassword() : existingUser.getPassword());
+        return userRepository.save(existingUser);
     }
 
     public User deleteUser(int id) {

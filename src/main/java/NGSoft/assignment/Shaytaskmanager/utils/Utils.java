@@ -28,8 +28,9 @@ public class Utils {
         return User.builder()
                 .name(userRequest.getName())
                 .email(userRequest.getEmail())
-                .isAdmin(userRequest.isAdmin())
-                .isActive(userRequest.isActive())
+                .isAdmin(userRequest.getIsAdmin())
+                .isActive(userRequest.getIsActive())
+                .password(userRequest.getPassword())
                 .build();
 
     }

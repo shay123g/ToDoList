@@ -42,9 +42,9 @@ public class TaskService {
         catch (NoSuchElementException e){
             throw new Exception(ExceptionMessages.TASK_NOT_EXIST);
         }
-        existingTask.setAssignee(task.getAssignee());
-        existingTask.setDescription(task.getDescription());
-        existingTask.setTitle(task.getTitle());
+        existingTask.setAssignee(task.getAssignee()!= null ? task.getAssignee() : existingTask.getAssignee());
+        existingTask.setDescription(task.getDescription()!= null ? task.getDescription() : existingTask.getDescription());
+        existingTask.setTitle(task.getTitle()!= null ? task.getTitle() : existingTask.getTitle());
         existingTask.setStatus(Status.getStatusById(task.getStatus()));
         return taskRepository.save(existingTask);
     }

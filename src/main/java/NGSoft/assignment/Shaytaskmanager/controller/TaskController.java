@@ -36,6 +36,14 @@ public class TaskController {
         return taskService.updateExistingTask(id, taskToUpdate);
     }
 
+    /**
+     * update task status. in case the input status is not according to enum  {@link NGSoft.assignment.Shaytaskmanager.concrete.Status}
+     * return default STATUS.UNKNOWN
+     * @param id the task id whom status need to be changed
+     * @param newStatus new status
+     * @return
+     * @throws Exception
+     */
     @PutMapping("/status-update/{id}")
     public Task updateTaskStatus(@PathVariable int id, @RequestBody StatusChaneRequest newStatus) throws Exception {
         return taskService.changeTaskStatus(id, newStatus.getNewStatus());

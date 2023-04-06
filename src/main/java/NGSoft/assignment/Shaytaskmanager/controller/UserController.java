@@ -21,7 +21,7 @@ public class UserController {
     }
 
     @PutMapping("/{id}")
-    public User updateUserDetails(@PathVariable int id, UserWebRequest userToUpdate) throws Exception {
+    public User updateUserDetails(@PathVariable int id, @RequestBody UserWebRequest userToUpdate) throws Exception {
         return userService.updateUser(id, userToUpdate);
     }
 

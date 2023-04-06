@@ -9,6 +9,4 @@ import java.util.List;
 @Repository
 @Transactional
 public interface UserRepository extends JpaRepository<User, String> {
-
-    User findByName(String name);
 }
