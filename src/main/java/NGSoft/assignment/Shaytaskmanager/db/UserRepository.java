@@ -8,5 +8,13 @@ import java.util.List;
 
 @Repository
 @Transactional
-public interface UserRepository extends JpaRepository<User, String> {
+public interface UserRepository extends JpaRepository<User, Integer> {
+
+    public User findByName(String name);
+    public User findByEmail(String email);
+    public List<User> findByIsAdmin(boolean isAdmin);
+    public List<User> findByIsActive(boolean isActive);
+    public User deleteByName(String name);
+
+
 }

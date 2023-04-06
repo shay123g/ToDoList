@@ -25,8 +25,14 @@ public class UserController {
         return userService.updateUser(id, userToUpdate);
     }
 
-    @DeleteMapping("/{id}")
-    public User deleteUser(@PathVariable int id) throws Exception {
-        return userService.deleteUser(id);
+    /**
+     * assumption: for simplicity purposes, each user name is unique
+     * @param name
+     * @return
+     * @throws Exception
+     */
+    @DeleteMapping("/{name}")
+    public User deleteUser(@PathVariable String name) throws Exception {
+        return userService.deleteUser(name);
     }
 }

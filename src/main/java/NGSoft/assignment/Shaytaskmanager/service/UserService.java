@@ -18,29 +18,30 @@ public class UserService {
     @Autowired
     UserRepository userRepository;
 
-    public User addUser(UserWebRequest user){
+    public User addUser(UserWebRequest user) {
         return userRepository.save(Utils.buildUserDBObject(user));
     }
 
     public User updateUser(int id, UserWebRequest user) throws Exception {
-        User existingUser = userRepository.findById(String.valueOf(id)).orElseThrow();
+        User existingUser = userRepository.findById(id).orElseThrow();
 
         if (Objects.equals(existingUser.getEmail(), user.getEmail())
-        && Objects.equals(existingUser.getName(), user.getName())
-        && Objects.equals(existingUser.getPassword(), user.getPassword())) {
+                && Objects.equals(existingUser.getName(), user.getName())
+                && Objects.equals(existingUser.getPassword(), user.getPassword())) {
             throw new Exception(ExceptionMessages.USER_NO_CHANGES);
         }
         existingUser.setIsActive(user.getIsActive() != null ? user.getIsActive() : existingUser.getIsActive());
-        existingUser.setName(user.getName() != null ? user.getName(): existingUser.getName());
+        existingUser.setName(user.getName() != null ? user.getName() : existingUser.getName());
         existingUser.setIsAdmin(user.getIsAdmin() != null ? user.getIsAdmin() : existingUser.getIsAdmin());
         existingUser.setEmail(user.getEmail() != null ? user.getEmail() : existingUser.getEmail());
         existingUser.setPassword(user.getPassword() != null ? user.getPassword() : existingUser.getPassword());
         return userRepository.save(existingUser);
     }
 
-    public User deleteUser(int id) {
-        User existingUser = userRepository.findById(String.valueOf(id)).orElseThrow();
+    public User deleteUser(String name) {
+        User existingUser = userRepository.findByName(name);
         userRepository.delete(existingUser);
         return existingUser;
     }
 }
+
