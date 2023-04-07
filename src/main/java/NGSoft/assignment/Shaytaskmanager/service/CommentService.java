@@ -5,6 +5,7 @@ import NGSoft.assignment.Shaytaskmanager.concrete.Status;
 import NGSoft.assignment.Shaytaskmanager.db.*;
 import NGSoft.assignment.Shaytaskmanager.exception.ExceptionMessages;
 import NGSoft.assignment.Shaytaskmanager.utils.Utils;
+import NGSoft.assignment.Shaytaskmanager.web.CommentWebRequest;
 import NGSoft.assignment.Shaytaskmanager.web.TaskWebRequest;
 import lombok.Data;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,11 +36,11 @@ public class CommentService {
      * @param
      * @return
      */
-    public Comment addCommentToTask(Integer taskId, String user, String commentText) {
-        Task requestedUserTask = taskRepository.findByAssignee(user).stream().filter(task -> task.getID() == taskId).toList().get(0);
-        User userFromDB = context.getBean(UserRepository.class).findByName(user);
+    public Comment addCommentToTask(CommentWebRequest comment) {
+        Task requestedUserTask = taskRepository.findByAssignee(comment.getUser()).stream().filter(task -> task.getID() == comment.getTaskId()).toList().get(0);
+        User userFromDB = context.getBean(UserRepository.class).findByName(comment.getUser());
         Pair<Task, User> dataForComment = Pair.of(requestedUserTask, userFromDB);
-        return commentRepository.save(Utils.buildCommentDBObject(dataForComment, commentText));
+        return commentRepository.save(Utils.buildCommentDBObject(dataForComment, comment.getComment()));
     }
 }
 

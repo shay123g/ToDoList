@@ -17,7 +17,7 @@ public class Comment {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "comment_id")
-    private String ID;
+    private int ID;
      @OneToOne
      @PrimaryKeyJoinColumn(name = "comment_id", referencedColumnName = "user_id")
     private User userId;

@@ -22,10 +22,10 @@ public class UserService {
         return userRepository.save(Utils.buildUserDBObject(user));
     }
 
-    public User updateUser(int id, UserWebRequest user) throws Exception {
-        User existingUser = userRepository.findById(id).orElseThrow();
+    public User updateUser(UserWebRequest user) throws Exception {
+        User existingUser = userRepository.findByName(user.getName());
 
-        if (Objects.equals(existingUser.getEmail(), user.getEmail())
+        if (existingUser != null && Objects.equals(existingUser.getEmail(), user.getEmail())
                 && Objects.equals(existingUser.getName(), user.getName())
                 && Objects.equals(existingUser.getPassword(), user.getPassword())) {
             throw new Exception(ExceptionMessages.USER_NO_CHANGES);

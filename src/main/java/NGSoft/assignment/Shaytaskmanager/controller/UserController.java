@@ -20,9 +20,9 @@ public class UserController {
         return userService.addUser(userToAdd);
     }
 
-    @PutMapping("/{id}")
-    public User updateUserDetails(@PathVariable int id, @RequestBody UserWebRequest userToUpdate) throws Exception {
-        return userService.updateUser(id, userToUpdate);
+    @PutMapping("/update")
+    public User updateUserDetails(@RequestBody UserWebRequest userToUpdate) throws Exception {
+        return userService.updateUser(userToUpdate);
     }
 
     /**
