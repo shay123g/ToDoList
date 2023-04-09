@@ -16,20 +16,24 @@ import java.util.List;
 @RequestMapping("/task")
 public class TaskController {
 
-//    @Autowired
-//    private LoginManager loginManager;
+
     @Autowired
     private final TaskService taskService;
 
 
     @PostMapping("/add")
-    public Task addTask(@RequestBody TaskWebRequest taskToSave){
+    public Task addTask(@RequestBody TaskWebRequest taskToSave) throws Exception {
         return taskService.saveTask(taskToSave);
     }
 
     @GetMapping("/get-all")
-    public List<Task> retrieveAllTasks(String token){
-        return taskService.getAllTasks(token);
+    public List<Task> retrieveAllTasks(){
+        return taskService.getAllTasks();
+    }
+
+    @GetMapping("/get-all/{user}")
+    public List<Task> retrieveAllTasks(@PathVariable String user){
+        return taskService.getTasksByUser(user);
     }
     @PutMapping("/{id}")
     public Task updateTask(@PathVariable int id, @RequestBody TaskWebRequest taskToUpdate) throws Exception {
@@ -40,13 +44,13 @@ public class TaskController {
      * update task status. in case the input status is not according to enum  {@link NGSoft.assignment.Shaytaskmanager.concrete.Status}
      * return default STATUS.UNKNOWN
      * @param id the task id whom status need to be changed
-     * @param newStatus new status
+     * @param statusRequest new status
      * @return
      * @throws Exception
      */
     @PutMapping("/status-update/{id}")
-    public Task updateTaskStatus(@PathVariable int id, @RequestBody StatusChaneRequest newStatus) throws Exception {
-        return taskService.changeTaskStatus(id, newStatus.getNewStatus());
+    public Task updateTaskStatus(@PathVariable int id, @RequestBody StatusChaneRequest statusRequest) throws Exception {
+        return taskService.changeTaskStatus(id, statusRequest);
     }
 
     @DeleteMapping("/{id}")

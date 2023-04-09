@@ -15,6 +15,8 @@ public class TaskWebRequest {
     private int status;
     @JsonProperty
     private String assignee;
+    @JsonProperty
+    private String assignor;
 
 
 }

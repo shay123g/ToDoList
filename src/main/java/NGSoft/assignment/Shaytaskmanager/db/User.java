@@ -22,8 +22,6 @@ public class User {
     private String email;
     private Boolean isAdmin;
     private Boolean isActive;
-
-    //FIXME: change implementation after testing
     private String password;
 
 }

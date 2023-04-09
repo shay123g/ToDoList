@@ -21,7 +21,7 @@ public class UserController {
     }
 
     @PutMapping("/update")
-    public User updateUserDetails(@RequestBody UserWebRequest userToUpdate) throws Exception {
+    public User updateUserDetails(@RequestBody UserWebRequest userToUpdate) {
         return userService.updateUser(userToUpdate);
     }
 

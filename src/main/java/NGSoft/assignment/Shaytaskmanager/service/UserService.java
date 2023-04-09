@@ -3,7 +3,6 @@ package NGSoft.assignment.Shaytaskmanager.service;
 import NGSoft.assignment.Shaytaskmanager.db.UserRepository;
 import NGSoft.assignment.Shaytaskmanager.db.User;
 import NGSoft.assignment.Shaytaskmanager.exception.ExceptionMessages;
-import NGSoft.assignment.Shaytaskmanager.utils.Utils;
 import NGSoft.assignment.Shaytaskmanager.web.UserWebRequest;
 import lombok.Data;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,16 +18,16 @@ public class UserService {
     UserRepository userRepository;
 
     public User addUser(UserWebRequest user) {
-        return userRepository.save(Utils.buildUserDBObject(user));
+        return userRepository.save(MiscService.buildUserDBObject(user));
     }
 
-    public User updateUser(UserWebRequest user) throws Exception {
+    public User updateUser(UserWebRequest user){
         User existingUser = userRepository.findByName(user.getName());
 
         if (existingUser != null && Objects.equals(existingUser.getEmail(), user.getEmail())
                 && Objects.equals(existingUser.getName(), user.getName())
                 && Objects.equals(existingUser.getPassword(), user.getPassword())) {
-            throw new Exception(ExceptionMessages.USER_NO_CHANGES);
+            throw new RuntimeException(ExceptionMessages.USER_NO_CHANGES);
         }
         existingUser.setIsActive(user.getIsActive() != null ? user.getIsActive() : existingUser.getIsActive());
         existingUser.setName(user.getName() != null ? user.getName() : existingUser.getName());

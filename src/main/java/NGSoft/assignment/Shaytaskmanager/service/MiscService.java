@@ -1,27 +1,22 @@
-package NGSoft.assignment.Shaytaskmanager.utils;
+package NGSoft.assignment.Shaytaskmanager.service;
 
 import NGSoft.assignment.Shaytaskmanager.concrete.Status;
 import NGSoft.assignment.Shaytaskmanager.db.Comment;
 import NGSoft.assignment.Shaytaskmanager.db.Task;
 import NGSoft.assignment.Shaytaskmanager.db.User;
-import NGSoft.assignment.Shaytaskmanager.db.UserRepository;
 import NGSoft.assignment.Shaytaskmanager.web.TaskWebRequest;
 import NGSoft.assignment.Shaytaskmanager.web.UserWebRequest;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.util.Pair;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 
 import java.sql.Timestamp;
 import java.util.Calendar;
-import java.util.Map;
 
-@Component
-public class Utils {
+@Service
+public class MiscService {
 
-    @Autowired
-    private static UserRepository userRepository;
-
-
+//    @Autowired
+//    private static UserRepository userRepository;
     public static Task buildTaskDBObject(TaskWebRequest taskRequest) {
         return Task.builder()
                 .title(taskRequest.getTitle())
@@ -32,12 +27,14 @@ public class Utils {
     }
 
     public static User buildUserDBObject(UserWebRequest userRequest) {
+//        final BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
         return User.builder()
                 .name(userRequest.getName())
                 .email(userRequest.getEmail())
                 .isAdmin(userRequest.getIsAdmin())
                 .isActive(userRequest.getIsActive())
                 .password(userRequest.getPassword())
+             //   .password(encodePassword(userRequest.getPassword(), encoder))
                 .build();
     }
 
@@ -49,4 +46,7 @@ public class Utils {
                 .userId(metaData.getSecond())
                 .build();
     }
+//    private static String encodePassword(String plainTextPass, BCryptPasswordEncoder encoder){
+//        return encoder.encode(plainTextPass);
+//    }
 }
