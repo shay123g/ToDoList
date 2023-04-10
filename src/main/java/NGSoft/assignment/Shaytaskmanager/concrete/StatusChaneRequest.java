@@ -9,4 +9,6 @@ public class StatusChaneRequest {
     @JsonProperty
     @JsonAlias("status")
     private int newStatus;
+    @JsonProperty
+    private String requester;
 }

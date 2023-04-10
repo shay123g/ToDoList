@@ -4,7 +4,6 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.springframework.stereotype.Component;
 
 @Entity
 @Data
@@ -23,6 +22,6 @@ public class User {
     private Boolean isAdmin;
     private Boolean isActive;
     private String password;
-    private String creator;
+    private String requester;
 
 }

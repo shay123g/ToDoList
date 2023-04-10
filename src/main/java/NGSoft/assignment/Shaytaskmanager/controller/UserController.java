@@ -22,7 +22,10 @@ public class UserController {
         return userService.addUser(userToAdd);
     }
 
-    @PatchMapping("/update/general")
+    /**
+     * update user general data: email, name, password
+     */
+    @PatchMapping("/update/general-data")
     public User updateUserGeneralDetails(@RequestBody UserWebRequest userToUpdate) {
         return userService.updateUserGeneralDetails(userToUpdate);
     }
@@ -32,22 +35,26 @@ public class UserController {
         return userService.getAllUsers();
     }
 
+    /**
+     * change user activation status
+     * @param userToUpdate
+     * @return
+     */
     @PatchMapping("/update/activation")
-    public User updateActivationStatus(@RequestBody UserWebRequest userToUpdate) {
+    public User changeUserActivationStatus(@RequestBody UserWebRequest userToUpdate) {
         return userService.updateUserActivationStatus(userToUpdate);
     }
 
+    /**
+     * change state of a user: admin or not
+     * @param userToUpdate
+     * @return
+     */
     @PatchMapping("/update/isAdmin")
     public User updateAdminState(@RequestBody UserWebRequest userToUpdate) {
         return userService.updateAdminState(userToUpdate);
     }
 
-    /**
-     * assumption: for simplicity purposes, each user name is unique
-     * @param name
-     * @return
-     * @throws Exception
-     */
     @DeleteMapping("/{name}")
     public User deleteUser(@PathVariable String name, @RequestBody  UserWebRequest requester) throws Exception {
         return userService.deleteUser(name,requester);

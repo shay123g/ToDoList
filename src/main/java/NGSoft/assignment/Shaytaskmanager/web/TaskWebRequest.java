@@ -16,7 +16,7 @@ public class TaskWebRequest {
     @JsonProperty
     private String assignee;
     @JsonProperty
-    private String assignor;
+    private String requester;
 
 
 }

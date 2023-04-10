@@ -2,12 +2,18 @@ package NGSoft.assignment.Shaytaskmanager.service;
 
 
 import NGSoft.assignment.Shaytaskmanager.db.*;
+import NGSoft.assignment.Shaytaskmanager.exception.ExceptionMessages;
 import NGSoft.assignment.Shaytaskmanager.web.CommentWebRequest;
+import NGSoft.assignment.Shaytaskmanager.web.TaskWebRequest;
 import lombok.Data;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.data.util.Pair;
 import org.springframework.stereotype.Service;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @Data
@@ -17,24 +23,32 @@ public class CommentService {
     private TaskRepository taskRepository;
     @Autowired
     private ApplicationContext context;
-
     @Autowired
-    CommentRepository commentRepository;
-    @Autowired MiscService service;
+    private CommentRepository commentRepository;
+    @Autowired
+    private MiscService utilService;
 
-    /**
-     * assumption: each user have one comment (simplicity)
-     *
-     * @param taskId
-     * @param user
-     * @param
-     * @return
-     */
     public Comment addCommentToTask(CommentWebRequest comment) {
-        Task requestedUserTask = taskRepository.findByAssignee(comment.getUser()).stream().filter(task -> task.getID() == comment.getTaskId()).toList().get(0);
-        User userFromDB = context.getBean(UserRepository.class).findByName(comment.getUser());
-        Pair<Task, User> dataForComment = Pair.of(requestedUserTask, userFromDB);
-        return commentRepository.save(service.buildCommentDBObject(dataForComment, comment.getComment()));
+        User requesterUSer = context.getBean(UserRepository.class).findByName(comment.getRequester());
+
+        Task requestedUserTask = taskRepository.findByAssignee(comment.getUserId()).stream().filter(task -> task.getID() == comment.getTaskId()).toList().get(0);
+        User taskAssignee = context.getBean(UserRepository.class).findByName(comment.getUserId());
+        if (comment.getRequester().equals(requestedUserTask.getAssignee()) || requesterUSer.getIsAdmin()) {
+            Pair<Task, User> dataForComment = Pair.of(requestedUserTask, taskAssignee);
+            return commentRepository.save(utilService.buildCommentDBObject(dataForComment, comment.getComment()));
+        }
+        throw new RuntimeException(ExceptionMessages.COMMENT_TASK_OPERATION_NOT_ALLOWED);
+    }
+    public List<Comment> getCommentsByUser(String userName, CommentWebRequest requester) {
+        User requsterUser = context.getBean(UserRepository.class).findByName(requester.getRequester());
+        User userForComments = context.getBean(UserRepository.class).findByName(userName);
+
+        if (userForComments != null  && requsterUser != null){
+            return new ArrayList<>(commentRepository.findByUserId(userForComments));
+        }
+        else{
+            throw new RuntimeException(ExceptionMessages.OBJECT_NOT_EXIST);
+           }
     }
 }
 

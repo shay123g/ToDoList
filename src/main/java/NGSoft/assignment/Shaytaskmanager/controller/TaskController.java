@@ -16,33 +16,42 @@ import java.util.List;
 @RequestMapping("/task")
 public class TaskController {
 
-
     @Autowired
     private final TaskService taskService;
-
 
     @PostMapping("/add")
     public Task addTask(@RequestBody TaskWebRequest taskToSave) throws Exception {
         return taskService.saveTask(taskToSave);
     }
 
+    /**
+     * for testing purposes
+     */
     @GetMapping("/get-all")
     public List<Task> retrieveAllTasks(){
         return taskService.getAllTasks();
     }
 
+    /**
+     * retrieve only the visible tasks for given user
+     */
     @GetMapping("/get-all/{user}")
-    public List<Task> retrieveAllTasks(@PathVariable String user){
-        return taskService.getTasksByUser(user);
+    public List<Task> retrieveAllTasksPerUser(@PathVariable String user, @RequestBody TaskWebRequest requester){
+        return taskService.getTasksByUser(user, requester);
     }
-    @PatchMapping("/{id}/general")
+
+    /**
+     * update general task data: description and title
+     * @return
+     */
+    @PatchMapping("/general/{id}")
     public Task updateGeneralTaskData(@PathVariable int id, @RequestBody TaskWebRequest taskToUpdate) throws Exception {
         return taskService.updateGeneralTaskData(id, taskToUpdate);
     }
 
-    @PatchMapping("/{id}/assignee")
-    public Task updateAssignee(@PathVariable int id, @RequestBody TaskWebRequest taskToUpdate,String requester) throws Exception {
-        return taskService.updateTaskAssignee(id, taskToUpdate,requester);
+    @PatchMapping("/assignee-update/{id}")
+    public Task updateAssignee(@PathVariable int id, @RequestBody TaskWebRequest taskToUpdate) throws Exception {
+        return taskService.updateTaskAssignee(id, taskToUpdate);
     }
 
     /**
@@ -54,12 +63,12 @@ public class TaskController {
      * @throws Exception
      */
     @PatchMapping("/status-update/{id}")
-    public Task updateTaskStatus(@PathVariable int id, @RequestBody StatusChaneRequest statusRequest, String requester) throws Exception {
-        return taskService.changeTaskStatus(id, statusRequest, requester);
+    public Task updateTaskStatus(@PathVariable int id, @RequestBody StatusChaneRequest statusRequest) throws Exception {
+        return taskService.changeTaskStatus(id, statusRequest);
     }
 
     @DeleteMapping("/{id}")
-    public Task deleteTask(@PathVariable int id) throws Exception {
-        return taskService.deleteTask(id);
+    public Task deleteTask(@PathVariable int id, @RequestBody TaskWebRequest requester) throws Exception {
+        return taskService.deleteTask(id, requester);
     }
 }

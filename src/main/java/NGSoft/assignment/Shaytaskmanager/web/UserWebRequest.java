@@ -15,15 +15,13 @@ public class UserWebRequest {
     @JsonProperty
     private String email;
     @JsonProperty
-    private Boolean isAdmin = false;
+    private Boolean isAdmin;
     @JsonProperty
-    private Boolean isActive = false;
+    private Boolean isActive;
     @JsonProperty
     private String password;
     @JsonProperty
-    private String creator;
-    @JsonProperty
-    String requester;
+    private String requester;
 
 
 }

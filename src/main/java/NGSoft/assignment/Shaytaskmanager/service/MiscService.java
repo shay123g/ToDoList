@@ -12,31 +12,26 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.data.util.Pair;
 import org.springframework.stereotype.Component;
-import org.springframework.stereotype.Service;
-
 import java.sql.Timestamp;
 import java.util.Calendar;
 
 
 @Component
 public class MiscService {
-
     @Autowired
-    public UserRepository userRepo;
-
+    private UserRepository userRepo;
     @Autowired
-    public ApplicationContext context;
+    private ApplicationContext context;
+
     public Task buildTaskDBObject(TaskWebRequest taskRequest) {
         return Task.builder()
                 .title(taskRequest.getTitle())
                 .description(taskRequest.getDescription())
-                .status(Status.getStatusById(taskRequest.getStatus()))
+                .status(Status.PENDING)
                 .assignee(taskRequest.getAssignee())
-                .assignor(taskRequest.getAssignor())
                 .isVisible(true)
                 .build();
     }
-
     public User buildUserDBObject(UserWebRequest userRequest) {
         return User.builder()
                 .name(userRequest.getName())
@@ -44,10 +39,9 @@ public class MiscService {
                 .isAdmin(userRequest.getIsAdmin())
                 .isActive(userRequest.getIsActive())
                 .password(userRequest.getPassword())
-                .creator(userRequest.getCreator() == null ? UserWebRequest.DEFAULT_USER : userRequest.getCreator())
+                .requester(userRequest.getRequester() == null ? UserWebRequest.DEFAULT_USER : userRequest.getRequester())
                 .build();
     }
-
     public Comment buildCommentDBObject(Pair<Task, User> metaData, String commentText) {
         return Comment.builder()
                 .date(new Timestamp(Calendar.getInstance().getTimeInMillis()))
@@ -56,22 +50,11 @@ public class MiscService {
                 .userId(metaData.getSecond())
                 .build();
     }
-
-    public void isUserPermittedForUserOperation(User currentUser){
-
-        User creator =  context.getBean(UserRepository.class).findByName(currentUser.getName());
-        boolean permitted = creator != null && (creator.getIsAdmin() || creator.getName().equals(UserWebRequest.DEFAULT_USER));
+    public void isUserPermittedForOperation(User user){
+        User userFromDB =  context.getBean(UserRepository.class).findByName(user.getName());
+        boolean permitted = userFromDB != null && (userFromDB.getIsAdmin() || userFromDB.getName().equals(UserWebRequest.DEFAULT_USER));
         if (!permitted){
-            throw new RuntimeException(ExceptionMessages.USER_OPERATION_NOT_ALLOWED);
-        }
-    }
-
-    public void isUserPermittedForTaskOperation(User currentUser, Task taskToCheck) {
-        if (currentUser != null) {
-            boolean isAssignorAdmin = userRepo.findByName(taskToCheck.getAssignor()).getIsAdmin();
-            if (!isAssignorAdmin) {
-                throw new RuntimeException(ExceptionMessages.TASK_OPERATION_ADD_NOT_ALLOWED);
-            }
+            throw new RuntimeException(ExceptionMessages.OPERATION_NOT_ALLOWED);
         }
     }
 }

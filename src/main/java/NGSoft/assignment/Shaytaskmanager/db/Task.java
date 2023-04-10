@@ -6,7 +6,6 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.springframework.stereotype.Component;
 
 @Entity
 @Data
@@ -24,6 +23,5 @@ public class Task {
     private String description;
     private Status status;
     private String assignee;
-    private String assignor;
     private boolean isVisible;
 }

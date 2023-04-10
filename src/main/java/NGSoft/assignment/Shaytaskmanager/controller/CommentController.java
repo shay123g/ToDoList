@@ -8,10 +8,9 @@ import NGSoft.assignment.Shaytaskmanager.web.CommentWebRequest;
 import NGSoft.assignment.Shaytaskmanager.web.TaskWebRequest;
 import lombok.Data;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @Data
@@ -19,10 +18,18 @@ import org.springframework.web.bind.annotation.RestController;
 public class CommentController {
 
     @Autowired
-    CommentService commentService;
+    private CommentService commentService;
     @PostMapping("/add")
     public Comment addCommentToTask(@RequestBody CommentWebRequest comment){
         return commentService.addCommentToTask(comment);
+    }
+
+    /**
+     * retrieve only the visible comments for given user
+     */
+    @GetMapping("/get-all/{user}")
+    public List<Comment> retrieveAllCommentsPerUser(@PathVariable String user, @RequestBody CommentWebRequest requester){
+        return commentService.getCommentsByUser(user, requester);
     }
 
 }
