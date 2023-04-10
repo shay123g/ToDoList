@@ -2,17 +2,18 @@
 This is simple implementation of 'To do list" app in REST architecture.
 
 # Deployment
-You have two options to deploy:
 
-First option:
-checkout the repo to your local PC and import it to your favorite IDE
-
-Second option:
 you need JRE 17 or greater (download here: https://www.oracle.com/java/technologies/javase/jdk17-archive-downloads.html)
-open command prompt, cd to the directory where you doenloaded the app.jar file and run
+
+You have two options to run the app:
+
+First, checkout the master branch to your local PC and import it to your favorite IDE
+
+then you can run the app directly from the IDE or you can copy app.jar from target directory and run in command prompt
+
 java -jar app.jar
 
-after application has been deployed, an H2 in memory DB automatically created with the following tables.
+after application has been deployed and running, an H2 in memory DB automatically created with the following tables.
 OWNERS(Users) table
 TASKS
 COMMENTS
