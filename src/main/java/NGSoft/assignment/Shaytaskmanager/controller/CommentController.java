@@ -24,9 +24,6 @@ public class CommentController {
         return commentService.addCommentToTask(comment);
     }
 
-    /**
-     * retrieve only the visible comments for given user
-     */
     @GetMapping("/get-all/{user}")
     public List<Comment> retrieveAllCommentsPerUser(@PathVariable String user, @RequestBody CommentWebRequest requester){
         return commentService.getCommentsByUser(user, requester);
