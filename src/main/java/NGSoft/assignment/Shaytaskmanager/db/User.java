@@ -23,5 +23,6 @@ public class User {
     private Boolean isAdmin;
     private Boolean isActive;
     private String password;
+    private String creator;
 
 }

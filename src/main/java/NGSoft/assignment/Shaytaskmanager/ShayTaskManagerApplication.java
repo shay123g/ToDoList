@@ -14,12 +14,17 @@ public class ShayTaskManagerApplication {
 	public static void main(String[] args) {
 		ApplicationContext context = SpringApplication.run(ShayTaskManagerApplication.class, args);
 
+
+		/**
+		 * create default Admin user in initialization
+		 */
 		UserWebRequest defaultUser = new UserWebRequest();
 		defaultUser.setName("SYS");
 		defaultUser.setIsActive(true);
 		defaultUser.setIsAdmin(true);
 		defaultUser.setEmail("default@myorg.com");
 		defaultUser.setPassword("AAAaaa123");
+		defaultUser.setCreator("SYSTEM");
 		context.getBean(UserService.class).addUser(defaultUser);
 	}
 

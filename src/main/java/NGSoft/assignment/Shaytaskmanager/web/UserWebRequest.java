@@ -8,6 +8,8 @@ import org.springframework.stereotype.Component;
 @Data
 public class UserWebRequest {
 
+    public static final String DEFAULT_USER = "SYS";
+
     @JsonProperty
     private String name;
     @JsonProperty
@@ -18,6 +20,10 @@ public class UserWebRequest {
     private Boolean isActive = false;
     @JsonProperty
     private String password;
+    @JsonProperty
+    private String creator;
+    @JsonProperty
+    String requester;
 
 
 }

@@ -7,6 +7,8 @@ import lombok.Data;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @Data
 @RequestMapping("/user")
@@ -20,9 +22,24 @@ public class UserController {
         return userService.addUser(userToAdd);
     }
 
-    @PutMapping("/update")
-    public User updateUserDetails(@RequestBody UserWebRequest userToUpdate) {
-        return userService.updateUser(userToUpdate);
+    @PatchMapping("/update/general")
+    public User updateUserGeneralDetails(@RequestBody UserWebRequest userToUpdate) {
+        return userService.updateUserGeneralDetails(userToUpdate);
+    }
+
+    @GetMapping("/all")
+    public List<User> getUsers() {
+        return userService.getAllUsers();
+    }
+
+    @PatchMapping("/update/activation")
+    public User updateActivationStatus(@RequestBody UserWebRequest userToUpdate) {
+        return userService.updateUserActivationStatus(userToUpdate);
+    }
+
+    @PatchMapping("/update/isAdmin")
+    public User updateAdminState(@RequestBody UserWebRequest userToUpdate) {
+        return userService.updateAdminState(userToUpdate);
     }
 
     /**
@@ -32,7 +49,7 @@ public class UserController {
      * @throws Exception
      */
     @DeleteMapping("/{name}")
-    public User deleteUser(@PathVariable String name) throws Exception {
-        return userService.deleteUser(name);
+    public User deleteUser(@PathVariable String name, @RequestBody  UserWebRequest requester) throws Exception {
+        return userService.deleteUser(name,requester);
     }
 }

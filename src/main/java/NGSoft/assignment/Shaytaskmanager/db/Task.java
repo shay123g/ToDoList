@@ -24,6 +24,6 @@ public class Task {
     private String description;
     private Status status;
     private String assignee;
-
-
+    private String assignor;
+    private boolean isVisible;
 }

@@ -35,9 +35,14 @@ public class TaskController {
     public List<Task> retrieveAllTasks(@PathVariable String user){
         return taskService.getTasksByUser(user);
     }
-    @PutMapping("/{id}")
-    public Task updateTask(@PathVariable int id, @RequestBody TaskWebRequest taskToUpdate) throws Exception {
-        return taskService.updateExistingTask(id, taskToUpdate);
+    @PatchMapping("/{id}/general")
+    public Task updateGeneralTaskData(@PathVariable int id, @RequestBody TaskWebRequest taskToUpdate) throws Exception {
+        return taskService.updateGeneralTaskData(id, taskToUpdate);
+    }
+
+    @PatchMapping("/{id}/assignee")
+    public Task updateAssignee(@PathVariable int id, @RequestBody TaskWebRequest taskToUpdate,String requester) throws Exception {
+        return taskService.updateTaskAssignee(id, taskToUpdate,requester);
     }
 
     /**
@@ -48,9 +53,9 @@ public class TaskController {
      * @return
      * @throws Exception
      */
-    @PutMapping("/status-update/{id}")
-    public Task updateTaskStatus(@PathVariable int id, @RequestBody StatusChaneRequest statusRequest) throws Exception {
-        return taskService.changeTaskStatus(id, statusRequest);
+    @PatchMapping("/status-update/{id}")
+    public Task updateTaskStatus(@PathVariable int id, @RequestBody StatusChaneRequest statusRequest, String requester) throws Exception {
+        return taskService.changeTaskStatus(id, statusRequest, requester);
     }
 
     @DeleteMapping("/{id}")

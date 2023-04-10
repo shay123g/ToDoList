@@ -20,6 +20,7 @@ public class CommentService {
 
     @Autowired
     CommentRepository commentRepository;
+    @Autowired MiscService service;
 
     /**
      * assumption: each user have one comment (simplicity)
@@ -33,7 +34,7 @@ public class CommentService {
         Task requestedUserTask = taskRepository.findByAssignee(comment.getUser()).stream().filter(task -> task.getID() == comment.getTaskId()).toList().get(0);
         User userFromDB = context.getBean(UserRepository.class).findByName(comment.getUser());
         Pair<Task, User> dataForComment = Pair.of(requestedUserTask, userFromDB);
-        return commentRepository.save(MiscService.buildCommentDBObject(dataForComment, comment.getComment()));
+        return commentRepository.save(service.buildCommentDBObject(dataForComment, comment.getComment()));
     }
 }
 
