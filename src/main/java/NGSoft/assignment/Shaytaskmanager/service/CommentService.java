@@ -2,9 +2,10 @@ package NGSoft.assignment.Shaytaskmanager.service;
 
 
 import NGSoft.assignment.Shaytaskmanager.db.*;
+import NGSoft.assignment.Shaytaskmanager.exception.CommentTaskNotAllowedException;
 import NGSoft.assignment.Shaytaskmanager.exception.ExceptionMessages;
+import NGSoft.assignment.Shaytaskmanager.exception.ObjectNotFoundException;
 import NGSoft.assignment.Shaytaskmanager.web.CommentWebRequest;
-import NGSoft.assignment.Shaytaskmanager.web.TaskWebRequest;
 import lombok.Data;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
@@ -13,7 +14,6 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Service
 @Data
@@ -37,7 +37,7 @@ public class CommentService {
             Pair<Task, User> dataForComment = Pair.of(requestedUserTask, taskAssignee);
             return commentRepository.save(utilService.buildCommentDBObject(dataForComment, comment.getComment()));
         }
-        throw new RuntimeException(ExceptionMessages.COMMENT_TASK_OPERATION_NOT_ALLOWED);
+        throw new CommentTaskNotAllowedException(ExceptionMessages.COMMENT_TASK_OPERATION_NOT_ALLOWED);
     }
     public List<Comment> getCommentsByUser(String userName, CommentWebRequest requester) {
         User requsterUser = context.getBean(UserRepository.class).findByName(requester.getRequester());
@@ -47,7 +47,7 @@ public class CommentService {
             return new ArrayList<>(commentRepository.findByUserId(userForComments));
         }
         else{
-            throw new RuntimeException(ExceptionMessages.OBJECT_NOT_EXIST);
+            throw new ObjectNotFoundException(ExceptionMessages.OBJECT_NOT_EXIST);
            }
     }
 }

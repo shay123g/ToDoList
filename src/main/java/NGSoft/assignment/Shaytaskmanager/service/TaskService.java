@@ -4,8 +4,8 @@ package NGSoft.assignment.Shaytaskmanager.service;
 import NGSoft.assignment.Shaytaskmanager.concrete.StatusChaneRequest;
 import NGSoft.assignment.Shaytaskmanager.db.*;
 import NGSoft.assignment.Shaytaskmanager.concrete.Status;
+import NGSoft.assignment.Shaytaskmanager.exception.*;
 import NGSoft.assignment.Shaytaskmanager.web.TaskWebRequest;
-import NGSoft.assignment.Shaytaskmanager.exception.ExceptionMessages;
 import lombok.Data;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
@@ -38,7 +38,7 @@ public class TaskService {
     }
     public Task saveTask(TaskWebRequest task) {
         if (task == null) {
-            throw new RuntimeException(ExceptionMessages.MISSING_PARAMETER);
+            throw new MissingParameterException(ExceptionMessages.MISSING_PARAMETER);
         }
         utilService.isUserPermittedForOperation(context.getBean(UserRepository.class).findByName(task.getRequester()));
 
@@ -51,7 +51,7 @@ public class TaskService {
             try {
                 existingTask = taskRepository.findById(id).orElseThrow();
             } catch (NoSuchElementException e) {
-                throw new RuntimeException(ExceptionMessages.OBJECT_NOT_EXIST);
+                throw new ObjectNotFoundException(ExceptionMessages.OBJECT_NOT_EXIST);
             }
             utilService.isUserPermittedForOperation(requester);
 
@@ -60,7 +60,7 @@ public class TaskService {
             return taskRepository.save(existingTask);
         }
         else{
-            throw new RuntimeException(ExceptionMessages.MISSING_PARAMETER);
+            throw new MissingParameterException(ExceptionMessages.MISSING_PARAMETER);
         }
     }
 
@@ -73,26 +73,26 @@ public class TaskService {
             User requesterUser = context.getBean(UserRepository.class).findByName(statusChangeRequest.getRequester());
             Task existingTask = taskRepository.findById(id).orElseThrow();
             if (requesterUser == null){
-                throw new RuntimeException(ExceptionMessages.OBJECT_NOT_EXIST);
+                throw new ObjectNotFoundException(ExceptionMessages.OBJECT_NOT_EXIST);
             }
             if (statusChangeRequest.getNewStatus() == existingTask.getStatus().getStatus()) {
-                throw new RuntimeException(ExceptionMessages.TASK_NEW_STATUS_SAME_OLD_STATUS);
+                throw new SameStatusException(ExceptionMessages.TASK_NEW_STATUS_SAME_OLD_STATUS);
             }
             boolean isStatusFlowValid = checkStatusFlowValidity(statusChangeRequest, existingTask.getStatus());
             if (!isStatusFlowValid) {
-                throw new RuntimeException(ExceptionMessages.TASK_INVALID_STATUS_FLOW);
+                throw new InvalidStatusFlowException(ExceptionMessages.TASK_INVALID_STATUS_FLOW);
             }
             if (Status.getStatusById(statusChangeRequest.getNewStatus()) == Status.ARCHIVED) {
                 handleTransitionToArchive(requesterUser, existingTask);
             } else if (existingTask.getAssignee().equals(requesterUser.getName()) || requesterUser.getIsAdmin()) {
                 existingTask.setStatus(Status.getStatusById(statusChangeRequest.getNewStatus()));
             } else {
-                throw new RuntimeException(ExceptionMessages.COMMENT_TASK_OPERATION_NOT_ALLOWED);
+                throw new CommentTaskNotAllowedException(ExceptionMessages.COMMENT_TASK_OPERATION_NOT_ALLOWED);
             }
             return taskRepository.save(existingTask);
         }
         else{
-            throw new RuntimeException(ExceptionMessages.MISSING_PARAMETER);
+            throw new MissingParameterException(ExceptionMessages.MISSING_PARAMETER);
         }
     }
     /**
@@ -113,7 +113,7 @@ public class TaskService {
         Task existingTask = taskRepository.findById(id).orElseThrow();
 
         if (requesterUser == null){
-            throw new RuntimeException(ExceptionMessages.OBJECT_NOT_EXIST);
+            throw new ObjectNotFoundException(ExceptionMessages.OBJECT_NOT_EXIST);
         }
         utilService.isUserPermittedForOperation(requesterUser);
 

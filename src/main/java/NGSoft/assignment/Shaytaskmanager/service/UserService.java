@@ -3,6 +3,9 @@ package NGSoft.assignment.Shaytaskmanager.service;
 import NGSoft.assignment.Shaytaskmanager.db.UserRepository;
 import NGSoft.assignment.Shaytaskmanager.db.User;
 import NGSoft.assignment.Shaytaskmanager.exception.ExceptionMessages;
+import NGSoft.assignment.Shaytaskmanager.exception.MissingParameterException;
+import NGSoft.assignment.Shaytaskmanager.exception.ObjectNotFoundException;
+import NGSoft.assignment.Shaytaskmanager.exception.UserNoChangeException;
 import NGSoft.assignment.Shaytaskmanager.web.UserWebRequest;
 import lombok.Data;
 import org.apache.logging.log4j.util.Strings;
@@ -31,7 +34,7 @@ public class UserService {
             }
             return userRepository.save(utilService.buildUserDBObject(user));
         }
-        throw new RuntimeException(ExceptionMessages.MISSING_PARAMETER);
+        throw new MissingParameterException(ExceptionMessages.MISSING_PARAMETER);
     }
     public List<User> getAllUsers() {
         return userRepository.findAll();
@@ -44,7 +47,7 @@ public class UserService {
                 if (Objects.equals(existingUserToUpdate.getEmail(), userDataToUpdate.getEmail())
                         && Objects.equals(existingUserToUpdate.getName(), userDataToUpdate.getName())
                         && Objects.equals(existingUserToUpdate.getPassword(), userDataToUpdate.getPassword())) {
-                    throw new RuntimeException(ExceptionMessages.USER_NO_CHANGES);
+                    throw new UserNoChangeException(ExceptionMessages.USER_NO_CHANGES);
                 }
                 utilService.isUserPermittedForOperation(requester);
                 existingUserToUpdate.setName(userDataToUpdate.getName() != null ? userDataToUpdate.getName() : existingUserToUpdate.getName());
@@ -53,13 +56,13 @@ public class UserService {
 
                 return userRepository.save(existingUserToUpdate);
             }
-            throw new RuntimeException(ExceptionMessages.OBJECT_NOT_EXIST);
+            throw new ObjectNotFoundException(ExceptionMessages.OBJECT_NOT_EXIST);
         }
-        throw new RuntimeException(ExceptionMessages.MISSING_PARAMETER);
+        throw new MissingParameterException(ExceptionMessages.MISSING_PARAMETER);
     }
     public User deleteUser(String name, UserWebRequest requester) {
         if ( Strings.isEmpty(name) || Strings.isEmpty(requester.getRequester())){
-            throw new RuntimeException((ExceptionMessages.MISSING_PARAMETER));
+            throw new MissingParameterException(ExceptionMessages.MISSING_PARAMETER);
         }
         User requesterUser = userRepository.findByName(requester.getRequester());
         User existingUser = userRepository.findByName(name);
@@ -68,11 +71,11 @@ public class UserService {
             userRepository.delete(existingUser);
             return existingUser;
         }
-        throw new RuntimeException(ExceptionMessages.OBJECT_NOT_EXIST);
+        throw new ObjectNotFoundException(ExceptionMessages.OBJECT_NOT_EXIST);
     }
     public User updateUserActivationStatus(UserWebRequest userToUpdate) {
         if ( userToUpdate == null || Strings.isEmpty(userToUpdate.getRequester())){
-            throw new RuntimeException((ExceptionMessages.MISSING_PARAMETER));
+            throw new MissingParameterException(ExceptionMessages.MISSING_PARAMETER);
         }
 
         User existingUser = userRepository.findByName(userToUpdate.getName());
@@ -85,7 +88,7 @@ public class UserService {
     }
     public User updateAdminState(UserWebRequest userToUpdate) {
         if (userToUpdate == null ||Strings.isEmpty(userToUpdate.getRequester()) ){
-            throw new RuntimeException((ExceptionMessages.MISSING_PARAMETER));
+            throw new MissingParameterException(ExceptionMessages.MISSING_PARAMETER);
         }
         User existingUser = userRepository.findByName(userToUpdate.getName());
 
