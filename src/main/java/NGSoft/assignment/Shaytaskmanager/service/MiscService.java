@@ -6,7 +6,7 @@ import NGSoft.assignment.Shaytaskmanager.db.Task;
 import NGSoft.assignment.Shaytaskmanager.db.User;
 import NGSoft.assignment.Shaytaskmanager.db.UserRepository;
 import NGSoft.assignment.Shaytaskmanager.exception.ExceptionMessages;
-import NGSoft.assignment.Shaytaskmanager.exception.ObjectNotFoundException;
+import NGSoft.assignment.Shaytaskmanager.exception.OperationNotAllowedException;
 import NGSoft.assignment.Shaytaskmanager.web.TaskWebRequest;
 import NGSoft.assignment.Shaytaskmanager.web.UserWebRequest;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -55,7 +55,7 @@ public class MiscService {
         User userFromDB =  context.getBean(UserRepository.class).findByName(user.getName());
         boolean permitted = userFromDB != null && (userFromDB.getIsAdmin() || userFromDB.getName().equals(UserWebRequest.DEFAULT_USER));
         if (!permitted){
-            throw new ObjectNotFoundException(ExceptionMessages.OBJECT_NOT_EXIST);
+            throw new OperationNotAllowedException(ExceptionMessages.OPERATION_NOT_ALLOWED);
         }
     }
 }

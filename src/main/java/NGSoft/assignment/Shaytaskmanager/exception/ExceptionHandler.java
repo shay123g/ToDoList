@@ -52,4 +52,10 @@ public class ExceptionHandler {
         return new ResponseEntity<>(response, HttpStatus.SEE_OTHER);
     }
 
+    @org.springframework.web.bind.annotation.ExceptionHandler
+    public ResponseEntity<ErrorResponse> operationNotAllowedHAndler(OperationNotAllowedException exception){
+        ErrorResponse response = new ErrorResponse(new Timestamp(Calendar.getInstance().getTimeInMillis()),ExceptionMessages.OPERATION_NOT_ALLOWED + exception.getMessage());
+        return new ResponseEntity<>(response, HttpStatus.SEE_OTHER);
+    }
+
 }
