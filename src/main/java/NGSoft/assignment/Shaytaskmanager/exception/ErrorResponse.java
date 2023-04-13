@@ -10,5 +10,6 @@ import java.sql.Timestamp;
 public class ErrorResponse {
     private Timestamp timestamp;
     private String message;
+    private String uri;
 
 }

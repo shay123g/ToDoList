@@ -1,6 +1,6 @@
 package NGSoft.assignment.Shaytaskmanager.exception;
 
-public class OperationNotAllowedException extends RuntimeException {
+public class OperationNotAllowedException extends ApplicativeException {
     public OperationNotAllowedException() {
     }
 

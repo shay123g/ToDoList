@@ -1,6 +1,6 @@
 package NGSoft.assignment.Shaytaskmanager.exception;
 
-public class MissingParameterException extends RuntimeException{
+public class MissingParameterException extends ApplicativeException{
 
     public MissingParameterException() {
     }

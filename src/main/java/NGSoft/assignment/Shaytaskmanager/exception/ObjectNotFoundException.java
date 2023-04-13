@@ -1,6 +1,6 @@
 package NGSoft.assignment.Shaytaskmanager.exception;
 
-public class ObjectNotFoundException extends RuntimeException{
+public class ObjectNotFoundException extends ApplicativeException{
     public ObjectNotFoundException() {
     }
 

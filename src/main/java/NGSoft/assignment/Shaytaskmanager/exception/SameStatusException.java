@@ -1,6 +1,6 @@
 package NGSoft.assignment.Shaytaskmanager.exception;
 
-public class SameStatusException extends RuntimeException{
+public class SameStatusException extends ApplicativeException{
     public SameStatusException() {
     }
 

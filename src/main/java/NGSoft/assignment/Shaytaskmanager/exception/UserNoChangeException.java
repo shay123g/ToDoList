@@ -1,6 +1,6 @@
 package NGSoft.assignment.Shaytaskmanager.exception;
 
-public class UserNoChangeException extends RuntimeException{
+public class UserNoChangeException extends ApplicativeException{
     public UserNoChangeException() {
     }
 

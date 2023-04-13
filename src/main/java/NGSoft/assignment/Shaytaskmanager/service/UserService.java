@@ -28,7 +28,7 @@ public class UserService {
      * Before adding user to the system, check if the requester has permission (aka admin) or this is system call, so permitted
      */
     public User addUser(UserWebRequest user) {
-        if (user != null) {
+        if (user != null && !user.getRequester().isEmpty()) {
             if (!user.getRequester().equals("SYSTEM")) {
                 utilService.isUserPermittedForOperation(userRepository.findByName(user.getRequester()));
             }

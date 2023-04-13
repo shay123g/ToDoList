@@ -1,6 +1,6 @@
 package NGSoft.assignment.Shaytaskmanager.exception;
 
-public class InvalidStatusFlowException extends RuntimeException{
+public class InvalidStatusFlowException extends ApplicativeException{
     public InvalidStatusFlowException() {
     }
 

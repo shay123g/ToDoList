@@ -1,6 +1,6 @@
 package NGSoft.assignment.Shaytaskmanager.exception;
 
-public class TaskViewNotAllowedException extends RuntimeException{
+public class TaskViewNotAllowedException extends ApplicativeException{
     public TaskViewNotAllowedException() {
     }
 

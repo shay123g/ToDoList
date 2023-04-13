@@ -1,6 +1,6 @@
 package NGSoft.assignment.Shaytaskmanager.exception;
 
-public class CommentTaskNotAllowedException extends RuntimeException {
+public class CommentTaskNotAllowedException extends ApplicativeException {
     public CommentTaskNotAllowedException() {
     }
 

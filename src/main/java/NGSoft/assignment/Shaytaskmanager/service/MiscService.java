@@ -6,6 +6,7 @@ import NGSoft.assignment.Shaytaskmanager.db.Task;
 import NGSoft.assignment.Shaytaskmanager.db.User;
 import NGSoft.assignment.Shaytaskmanager.db.UserRepository;
 import NGSoft.assignment.Shaytaskmanager.exception.ExceptionMessages;
+import NGSoft.assignment.Shaytaskmanager.exception.ObjectNotFoundException;
 import NGSoft.assignment.Shaytaskmanager.exception.OperationNotAllowedException;
 import NGSoft.assignment.Shaytaskmanager.web.TaskWebRequest;
 import NGSoft.assignment.Shaytaskmanager.web.UserWebRequest;
@@ -52,6 +53,9 @@ public class MiscService {
                 .build();
     }
     public void isUserPermittedForOperation(User user){
+       if (user == null){
+           throw new ObjectNotFoundException(ExceptionMessages.OBJECT_NOT_EXIST);
+       }
         User userFromDB =  context.getBean(UserRepository.class).findByName(user.getName());
         boolean permitted = userFromDB != null && (userFromDB.getIsAdmin() || userFromDB.getName().equals(UserWebRequest.DEFAULT_USER));
         if (!permitted){
