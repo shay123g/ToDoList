@@ -1,6 +1,7 @@
 package NGSoft.assignment.Shaytaskmanager.service;
 
 import NGSoft.assignment.Shaytaskmanager.concrete.Status;
+import NGSoft.assignment.Shaytaskmanager.config.SecurityConfig;
 import NGSoft.assignment.Shaytaskmanager.db.Comment;
 import NGSoft.assignment.Shaytaskmanager.db.Task;
 import NGSoft.assignment.Shaytaskmanager.db.User;
@@ -40,7 +41,7 @@ public class MiscService {
                 .email(userRequest.getEmail())
                 .isAdmin(userRequest.getIsAdmin())
                 .isActive(userRequest.getIsActive())
-                .password(userRequest.getPassword())
+                .password(SecurityConfig.passwordEncoder().encode(userRequest.getPassword()))
                 .requester(userRequest.getRequester() == null ? UserWebRequest.DEFAULT_USER : userRequest.getRequester())
                 .build();
     }
