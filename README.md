@@ -1,5 +1,17 @@
 # ToDoList
-This is simple implementation of 'To do list" app in REST architecture.
+This is simple implementation of 'To do list" app in REST architecture
+
+using:
+
+-Spring JPA
+
+-Spring Boot
+
+-Spring security (JWT  barear token)
+
+and H2 in-memory DB
+
+
 
 # Deployment
 
@@ -18,7 +30,13 @@ OWNERS(Users) table
 TASKS
 COMMENTS
 
-also, a default Admin user called SYS created on the application startup
+a default Admin user called SYS created on the application startup
+
+credentials: 
+
+username: SYS
+
+password: AAAaaa123
 
 you can access the DB via web browser on URL:
 http://localhost:8080/h2-console
@@ -34,6 +52,18 @@ password: 1234
 first you need to download Postman from here https://www.postman.com/downloads/
 
 the application receive the following requests, all in JSON format
+
+in order to start working you first need to authenticate yourself as the SYS user and receive a token:
+
+POST localhost:8080/login (no body)
+
+![img.png](src/img.png)
+
+After that, on each request you made you need to past the token, otherwise you will get
+
+401 Unauthorized
+
+![img_1.png](src/img_1.png)
 
 #User operations
 
@@ -73,7 +103,7 @@ PATCH http://localhost:8080/user/update/general-data
 
 "email": "email@myOrg.com",
 
-"password":"password",  
+"password":"password",
 
 "requester":"SYS"  //(or any admin user). mandatory field
 
@@ -355,6 +385,6 @@ the below request will produce an error because Dan has no admin role and he isn
 
 "comment": "comment",
 
-"requester":"dan"  
+"requester":"dan"
 
 }
